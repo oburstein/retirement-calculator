@@ -1,0 +1,270 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f0f4f8;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+}
+
+.container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  max-width: 960px;
+  width: 100%;
+  display: flex;
+  gap: 40px;
+}
+
+.left-panel {
+  flex: 0 0 340px;
+}
+
+.right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h1 {
+  font-size: 1.6rem;
+  margin-bottom: 8px;
+  color: #1a365d;
+}
+
+.subtitle {
+  color: #718096;
+  font-size: 0.95rem;
+  margin-bottom: 28px;
+}
+
+.field {
+  margin-bottom: 18px;
+}
+
+.field-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.field-row .field {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #4a5568;
+}
+
+.label-with-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label-with-toggle label {
+  margin-bottom: 0;
+}
+
+.toggle {
+  display: flex;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.toggle-btn {
+  width: auto;
+  padding: 3px 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0;
+  background: white;
+  color: #718096;
+  cursor: pointer;
+  margin-top: 0;
+  transition: all 0.2s;
+}
+
+.toggle-btn:hover {
+  background: #f7fafc;
+}
+
+.toggle-btn.active {
+  background: #3182ce;
+  color: white;
+}
+
+input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #4299e1;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #3182ce;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #2b6cb0;
+}
+
+.results {
+  display: none;
+}
+
+.results.visible {
+  display: block;
+}
+
+.placeholder {
+  text-align: center;
+  color: #a0aec0;
+  font-size: 1rem;
+  padding: 40px 20px;
+}
+
+.result-label {
+  font-size: 0.85rem;
+  color: #718096;
+  margin-bottom: 2px;
+}
+
+.result-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #276749;
+}
+
+.result-range {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 14px;
+}
+
+.range-scenario {
+  flex: 1;
+}
+
+.range-scenario .scenario-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.range-scenario.low .scenario-label { color: #c05621; }
+.range-scenario.high .scenario-label { color: #276749; }
+.range-scenario.low .result-value { color: #c05621; font-size: 1.5rem; }
+.range-scenario.high .result-value { color: #276749; font-size: 1.5rem; }
+
+.todays-dollars {
+  font-size: 0.8rem;
+  color: #718096;
+  font-style: italic;
+  margin-top: 2px;
+}
+
+.breakdown {
+  background: #f7fafc;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+
+.breakdown-header {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #a0aec0;
+  margin-bottom: 6px;
+}
+
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 0.85rem;
+}
+
+.breakdown-row span:first-child {
+  color: #718096;
+}
+
+.breakdown-row span:last-child {
+  font-weight: 600;
+}
+
+.chart-section {
+  margin-top: 16px;
+}
+
+.chart-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1a365d;
+  margin-bottom: 8px;
+}
+
+canvas {
+  width: 100%;
+  height: 200px;
+}
+
+.chart-legend {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: #4a5568;
+}
+
+.legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
