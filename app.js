@@ -1,3 +1,29 @@
+// Theme management
+function getPreferredTheme() {
+  const saved = localStorage.getItem('theme');
+  if (saved) return saved;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('themeBtn').textContent = theme === 'dark' ? '\u2600' : '\u263E';
+  localStorage.setItem('theme', theme);
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = current === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+  if (lastDataLow && lastDataHigh) drawChart(lastDataLow, lastDataHigh);
+}
+
+applyTheme(getPreferredTheme());
+
+// Store last chart data so we can redraw on theme change
+let lastDataLow = null;
+let lastDataHigh = null;
+
 // Comma formatting for currency inputs
 document.querySelectorAll('#currentSavings, #contribution').forEach(input => {
   input.addEventListener('input', function () {
@@ -24,6 +50,10 @@ function parseMoney(id) {
 
 function formatMoney(amount) {
   return '$' + Math.round(amount).toLocaleString();
+}
+
+function getCSSVar(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
 
 function computeGrowth(currentSavings, contribution, isMonthly, returnRate, inflationRate, years, currentAge) {
@@ -73,6 +103,9 @@ function calculate() {
   const dataLow = computeGrowth(currentSavings, contribution, isMonthly, rateLow, inflationRate, years, currentAge);
   const dataHigh = computeGrowth(currentSavings, contribution, isMonthly, rateHigh, inflationRate, years, currentAge);
 
+  lastDataLow = dataLow;
+  lastDataHigh = dataHigh;
+
   const finalLow = dataLow[dataLow.length - 1];
   const finalHigh = dataHigh[dataHigh.length - 1];
 
@@ -110,6 +143,14 @@ function drawChart(dataLow, dataHigh) {
 
   ctx.clearRect(0, 0, w, h);
 
+  // Read theme-aware colors
+  const gridColor = getCSSVar('--chart-grid');
+  const labelColor = getCSSVar('--chart-label');
+  const lowColor = getCSSVar('--low-color');
+  const highColor = getCSSVar('--high-color');
+  const contribColor = '#3182ce';
+  const inflationColor = '#9f7aea';
+
   const maxVal = Math.max(...dataHigh.map(d => d.total));
   const niceMax = Math.ceil(maxVal / 100000) * 100000 || 1;
   const xStep = chartW / (dataLow.length - 1 || 1);
@@ -118,9 +159,9 @@ function drawChart(dataLow, dataHigh) {
   function getY(val) { return pad.top + chartH - (val / niceMax) * chartH; }
 
   // Grid lines
-  ctx.strokeStyle = '#e2e8f0';
+  ctx.strokeStyle = gridColor;
   ctx.lineWidth = 1;
-  ctx.fillStyle = '#718096';
+  ctx.fillStyle = labelColor;
   ctx.font = '10px -apple-system, sans-serif';
   ctx.textAlign = 'right';
   const gridLines = 4;
@@ -160,7 +201,7 @@ function drawChart(dataLow, dataHigh) {
     if (i === 0) ctx.moveTo(getX(i), getY(d.total));
     else ctx.lineTo(getX(i), getY(d.total));
   });
-  ctx.strokeStyle = '#276749';
+  ctx.strokeStyle = highColor;
   ctx.lineWidth = 2;
   ctx.stroke();
 
@@ -170,7 +211,7 @@ function drawChart(dataLow, dataHigh) {
     if (i === 0) ctx.moveTo(getX(i), getY(d.total));
     else ctx.lineTo(getX(i), getY(d.total));
   });
-  ctx.strokeStyle = '#c05621';
+  ctx.strokeStyle = lowColor;
   ctx.lineWidth = 2;
   ctx.stroke();
 
@@ -180,7 +221,7 @@ function drawChart(dataLow, dataHigh) {
     if (i === 0) ctx.moveTo(getX(i), getY(d.realTotal));
     else ctx.lineTo(getX(i), getY(d.realTotal));
   });
-  ctx.strokeStyle = '#9f7aea';
+  ctx.strokeStyle = inflationColor;
   ctx.lineWidth = 2;
   ctx.setLineDash([6, 4]);
   ctx.stroke();
@@ -192,12 +233,12 @@ function drawChart(dataLow, dataHigh) {
     if (i === 0) ctx.moveTo(getX(i), getY(d.contributed));
     else ctx.lineTo(getX(i), getY(d.contributed));
   });
-  ctx.strokeStyle = '#3182ce';
+  ctx.strokeStyle = contribColor;
   ctx.lineWidth = 2;
   ctx.stroke();
 
   // X-axis labels
-  ctx.fillStyle = '#718096';
+  ctx.fillStyle = labelColor;
   ctx.textAlign = 'center';
   ctx.font = '10px -apple-system, sans-serif';
   const labelInterval = Math.max(1, Math.floor(dataLow.length / 6));

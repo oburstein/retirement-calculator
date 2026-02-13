@@ -4,26 +4,94 @@
   box-sizing: border-box;
 }
 
+:root {
+  --bg: #f0f4f8;
+  --text: #333;
+  --card-bg: white;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+  --heading: #1a365d;
+  --subtitle: #718096;
+  --label: #4a5568;
+  --input-border: #e2e8f0;
+  --input-bg: white;
+  --input-text: #333;
+  --input-focus: #4299e1;
+  --toggle-bg: white;
+  --toggle-text: #718096;
+  --toggle-border: #e2e8f0;
+  --toggle-hover: #f7fafc;
+  --btn-bg: #3182ce;
+  --btn-hover: #2b6cb0;
+  --placeholder: #a0aec0;
+  --result-label: #718096;
+  --low-color: #c05621;
+  --high-color: #276749;
+  --todays-dollars: #718096;
+  --breakdown-bg: #f7fafc;
+  --breakdown-header: #a0aec0;
+  --breakdown-label: #718096;
+  --chart-grid: #e2e8f0;
+  --chart-label: #718096;
+  --legend-text: #4a5568;
+  --theme-toggle-bg: transparent;
+  --theme-toggle-text: #718096;
+}
+
+[data-theme="dark"] {
+  --bg: #1a202c;
+  --text: #e2e8f0;
+  --card-bg: #2d3748;
+  --card-shadow: rgba(0, 0, 0, 0.4);
+  --heading: #90cdf4;
+  --subtitle: #a0aec0;
+  --label: #cbd5e0;
+  --input-border: #4a5568;
+  --input-bg: #1a202c;
+  --input-text: #e2e8f0;
+  --input-focus: #63b3ed;
+  --toggle-bg: #1a202c;
+  --toggle-text: #a0aec0;
+  --toggle-border: #4a5568;
+  --toggle-hover: #2d3748;
+  --btn-bg: #4299e1;
+  --btn-hover: #3182ce;
+  --placeholder: #718096;
+  --result-label: #a0aec0;
+  --low-color: #ed8936;
+  --high-color: #68d391;
+  --todays-dollars: #a0aec0;
+  --breakdown-bg: #1a202c;
+  --breakdown-header: #718096;
+  --breakdown-label: #a0aec0;
+  --chart-grid: #4a5568;
+  --chart-label: #a0aec0;
+  --legend-text: #cbd5e0;
+  --theme-toggle-bg: transparent;
+  --theme-toggle-text: #a0aec0;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #f0f4f8;
-  color: #333;
+  background: var(--bg);
+  color: var(--text);
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding: 40px 20px;
+  transition: background 0.3s, color 0.3s;
 }
 
 .container {
-  background: white;
+  background: var(--card-bg);
   border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 24px var(--card-shadow);
   padding: 40px;
   max-width: 960px;
   width: 100%;
   display: flex;
   gap: 40px;
+  transition: background 0.3s, box-shadow 0.3s;
 }
 
 .left-panel {
@@ -37,14 +105,37 @@ body {
   justify-content: center;
 }
 
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
 h1 {
   font-size: 1.6rem;
   margin-bottom: 8px;
-  color: #1a365d;
+  color: var(--heading);
+}
+
+.theme-toggle {
+  background: var(--theme-toggle-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  color: var(--theme-toggle-text);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 4px 8px;
+  margin-top: 0;
+  width: auto;
+  transition: all 0.2s;
+}
+
+.theme-toggle:hover {
+  background: var(--toggle-hover);
 }
 
 .subtitle {
-  color: #718096;
+  color: var(--subtitle);
   font-size: 0.95rem;
   margin-bottom: 28px;
 }
@@ -69,7 +160,7 @@ label {
   font-size: 0.9rem;
   font-weight: 600;
   margin-bottom: 6px;
-  color: #4a5568;
+  color: var(--label);
 }
 
 .label-with-toggle {
@@ -84,7 +175,7 @@ label {
 
 .toggle {
   display: flex;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--toggle-border);
   border-radius: 6px;
   overflow: hidden;
 }
@@ -96,40 +187,42 @@ label {
   font-weight: 600;
   border: none;
   border-radius: 0;
-  background: white;
-  color: #718096;
+  background: var(--toggle-bg);
+  color: var(--toggle-text);
   cursor: pointer;
   margin-top: 0;
   transition: all 0.2s;
 }
 
 .toggle-btn:hover {
-  background: #f7fafc;
+  background: var(--toggle-hover);
 }
 
 .toggle-btn.active {
-  background: #3182ce;
+  background: var(--btn-bg);
   color: white;
 }
 
 input {
   width: 100%;
   padding: 10px 14px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--input-border);
   border-radius: 8px;
   font-size: 1rem;
-  transition: border-color 0.2s;
+  background: var(--input-bg);
+  color: var(--input-text);
+  transition: border-color 0.2s, background 0.3s, color 0.3s;
 }
 
 input:focus {
   outline: none;
-  border-color: #4299e1;
+  border-color: var(--input-focus);
 }
 
 button {
   width: 100%;
   padding: 12px;
-  background: #3182ce;
+  background: var(--btn-bg);
   color: white;
   border: none;
   border-radius: 8px;
@@ -141,7 +234,7 @@ button {
 }
 
 button:hover {
-  background: #2b6cb0;
+  background: var(--btn-hover);
 }
 
 .results {
@@ -154,21 +247,21 @@ button:hover {
 
 .placeholder {
   text-align: center;
-  color: #a0aec0;
+  color: var(--placeholder);
   font-size: 1rem;
   padding: 40px 20px;
 }
 
 .result-label {
   font-size: 0.85rem;
-  color: #718096;
+  color: var(--result-label);
   margin-bottom: 2px;
 }
 
 .result-value {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #276749;
+  color: var(--high-color);
 }
 
 .result-range {
@@ -189,23 +282,24 @@ button:hover {
   margin-bottom: 2px;
 }
 
-.range-scenario.low .scenario-label { color: #c05621; }
-.range-scenario.high .scenario-label { color: #276749; }
-.range-scenario.low .result-value { color: #c05621; font-size: 1.5rem; }
-.range-scenario.high .result-value { color: #276749; font-size: 1.5rem; }
+.range-scenario.low .scenario-label { color: var(--low-color); }
+.range-scenario.high .scenario-label { color: var(--high-color); }
+.range-scenario.low .result-value { color: var(--low-color); font-size: 1.5rem; }
+.range-scenario.high .result-value { color: var(--high-color); font-size: 1.5rem; }
 
 .todays-dollars {
   font-size: 0.8rem;
-  color: #718096;
+  color: var(--todays-dollars);
   font-style: italic;
   margin-top: 2px;
 }
 
 .breakdown {
-  background: #f7fafc;
+  background: var(--breakdown-bg);
   border-radius: 8px;
   padding: 12px 16px;
   margin-bottom: 16px;
+  transition: background 0.3s;
 }
 
 .breakdown-header {
@@ -213,7 +307,7 @@ button:hover {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #a0aec0;
+  color: var(--breakdown-header);
   margin-bottom: 6px;
 }
 
@@ -225,7 +319,7 @@ button:hover {
 }
 
 .breakdown-row span:first-child {
-  color: #718096;
+  color: var(--breakdown-label);
 }
 
 .breakdown-row span:last-child {
@@ -239,7 +333,7 @@ button:hover {
 .chart-title {
   font-size: 0.9rem;
   font-weight: 700;
-  color: #1a365d;
+  color: var(--heading);
   margin-bottom: 8px;
 }
 
@@ -260,7 +354,7 @@ canvas {
   align-items: center;
   gap: 5px;
   font-size: 0.75rem;
-  color: #4a5568;
+  color: var(--legend-text);
 }
 
 .legend-swatch {
