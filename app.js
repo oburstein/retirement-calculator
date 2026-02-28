@@ -42,7 +42,31 @@ function setFrequency(freq) {
   document.getElementById('btnMonthly').classList.toggle('active', freq === 'monthly');
   const input = document.getElementById('contribution');
   input.placeholder = freq === 'monthly' ? 'e.g. 500' : 'e.g. 10,000';
+  saveInputs();
 }
+
+const INPUT_FIELDS = ['currentAge', 'retirementAge', 'currentSavings', 'contribution', 'returnRateLow', 'returnRateHigh', 'inflationRate'];
+
+function saveInputs() {
+  const data = {};
+  INPUT_FIELDS.forEach(id => { data[id] = document.getElementById(id).value; });
+  data.contributionFrequency = contributionFrequency;
+  localStorage.setItem('retirementInputs', JSON.stringify(data));
+}
+
+function restoreInputs() {
+  let data;
+  try { data = JSON.parse(localStorage.getItem('retirementInputs')); } catch (e) { return; }
+  if (!data) return;
+  INPUT_FIELDS.forEach(id => { if (data[id] !== undefined) document.getElementById(id).value = data[id]; });
+  if (data.contributionFrequency) setFrequency(data.contributionFrequency);
+}
+
+restoreInputs();
+
+INPUT_FIELDS.forEach(id => {
+  document.getElementById(id).addEventListener('input', saveInputs);
+});
 
 function parseMoney(id) {
   return parseFloat(document.getElementById(id).value.replace(/[^0-9.]/g, '')) || 0;
